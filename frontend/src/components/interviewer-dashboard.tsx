@@ -13,7 +13,7 @@ export function InterviewerDashboard() {
     <div className="flex min-h-screen w-full flex-col bg-[#f0f4fc] items-center">
       <header className="flex items-center justify-between w-full p-6 bg-[#f0f4fc]">
         <h1 className="text-3xl font-bold text-[#5b21b6]">Interviewer Dashboard</h1>
-        <Link href="/new-job" passHref> {/* Ensure the correct path is used */}
+        <Link href="/newjob" passHref> {/* Ensure the correct path is used */}
           <Button variant="primary" className="bg-[#d8b4fe] text-[#5b21b6]">
             Upload Job
           </Button>

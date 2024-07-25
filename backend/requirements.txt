@@ -1,0 +1,10 @@
+Flask
+Flask-WTF
+WTForms
+scikit-learn
+markupsafe
+transformers
+torch
+sentence-transformers
+xformers
+

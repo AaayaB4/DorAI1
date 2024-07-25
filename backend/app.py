@@ -1,29 +1,22 @@
-from flask import Flask, request, jsonify
-from transformers import pipeline
+from flask import Flask, render_template
+from Classes.forms import ResumeForm
+from Classes.similarity import calculate_similarity
+import os
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY", "default_secret_key")
 
-# Load Hugging Face models
-trocr_model = pipeline("ocr", model="microsoft/trocr-large-printed")
-whisper_model = pipeline("automatic-speech-recognition", model="Systran/faster-whisper-large-v3")
 
-@app.route('/')
-def home():
-    return "DorAI Backend"
+@app.route("/", methods=["GET", "POST"])
+def index():
+    form = ResumeForm()
+    score = None
+    if form.validate_on_submit():
+        resume = form.resume.data
+        job_description = form.job_description.data
+        score = calculate_similarity(resume, job_description)
+    return render_template("index.html", form=form, score=score)
 
-@app.route('/process_cv', methods=['POST'])
-def process_cv():
-    file = request.files['file']
-    # Process the CV using the trocr_model
-    text = trocr_model(file)
-    return jsonify(text)
 
-@app.route('/transcribe_audio', methods=['POST'])
-def transcribe_audio():
-    file = request.files['file']
-    # Transcribe the audio using the whisper_model
-    transcription = whisper_model(file)
-    return jsonify(transcription)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
